@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mern Machine Test</title>
+    <style>
+        body{
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            font-family: "poppins","sans-serif";
+            padding: 10px;
+        }
+        .main{
+            border: 1px solid black;
+            width: 40%;
+        }
+        .header{
+            width: 100%;
+        }
+        .logo{
+            padding: 10px;
+            font-size: 20px;
+            border-bottom:1px solid black ;
+        }
+        .description{
+            text-align: center;
+            padding: 10px;
+            font-size: 20px;
+            border-bottom:1px solid black ;
+            background-color: yellow;
+            color: black;
+        }
+        .inner{
+            width: 100%;
+          
+        }
+        .username{
+            display: flex;
+            padding: 10px;
+            flex-direction: column;
+        }
+        .username div{
+            display: flex;
+            
+        }
+       .username input{
+        width: 80%;
+        padding: 10px;
+        font-size: 15px;
+       }
+       .username label{
+        width: 20%;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+       }
+       .password{
+            display: flex;
+            padding: 10px;
+            flex-direction: column
+        }
+        .password div{
+            display: flex;
+        }
+       .password input{
+        width: 80%;
+        padding: 10px;
+       }
+       .password label{
+        width: 20%;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+       }
+       .submit{
+        display: flex;
+        justify-content: center;
+        padding: 10px;
+       }
+       button{
+        background-color: lawngreen;
+        width: 80%;
+        padding: 10px;
+        border: 1px solid black;
+        color: white;
+        font-weight: 700;
+        font-size: 15px;
+       }
+       span{
+       
+        color:red;
+        margin-top: 5px;
+        text-align:justify;
+        font-size: 15px;
+        padding: 0 10px;
+       }
+    </style>
+</head>
+<body>
+   
+    <div class="main">
+        <div class="header">
+            <div class="logo">Logo</div>
+            <div class="description">Login Page</div>
+        </div>
+        <div class="inner">
+            <div class="username">
+                <div>
+                    <label for="username">User Name</label>
+                    <input type="text" id="username" name="username">
+                </div>
+                <span class="usernamespan"></span>
+            </div>
+            <div class="password">
+                <div>
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password">
+                </div>
+                <span class="passwordspan"></span>
+            </div>
+            <div class="submit">
+                <button type="submit" onclick="login()">Submit</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        function login(){
+            let username= document.querySelector("#username").value;
+            let password= document.querySelector("#password").value;
+            fetch("http://localhost:4000/onaboarding/login",{
+                method:"POST",
+                headers:{"Content-Type":"application/json"},
+                body:JSON.stringify({username:username,password:password})
+            }).then((response)=>{
+                  if(response.ok){
+                    return response.json()
+                    .then(data=>{
+                        localStorage.setItem("token",data.token);
+                        window.location.href=data.path;
+                    })
+                  }
+                  else{
+                    return response.json()
+                    .then(error=>{
+                        if(error.message.path=="username"){
+                            document.querySelector("#password").style.borderColor="black";
+                            document.querySelector(".passwordspan").innerText="";
+                            document.querySelector(".usernamespan").innerText=error.message.msg+" "+"!";
+                            document.querySelector("#username").style.borderColor="red";
+                        }
+                        else if(error.message.path=="password"){
+                            document.querySelector("#username").style.borderColor="black";
+                            document.querySelector(".usernamespan").innerText="";
+                            document.querySelector(".passwordspan").innerText=error.message.msg+" "+"!";
+                            document.querySelector("#password").style.borderColor="red";
+                        }
+                        else{
+                            document.querySelector("#password").style.borderColor="black";
+                            document.querySelector(".passwordspan").innerText="";
+                            document.querySelector("#username").style.borderColor="black";
+                            document.querySelector(".usernamespan").innerText="";
+                            alert(error.message.msg);
+                        }
+                    })
+                  }
+            }).catch(err=>{
+                alert("error occured-->",err);
+            })
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<body>
+    <div class="main">
+        <div class="header">
+            <div class="headerlogo">Logo</div>
+            <div class="navbar">
+                <div class="nav1">
+                    <a href="/dashbord">Home</a>
+                    <a >Employee List</a>
+                </div>
+                <div class="nav2">
+                    <a class="username" href="#"></a>
+                    <a class="logout" onclick="logout()">Logout</a>
+                </div> 
+            </div>
+            <div class="description">Employee List</div>
+            <div class="containermain2">
+                <div class="buttons">
+                    <div class="count">Total Count:4</div>
+                    <button class="createemployee">Create Employee</button>
+                </div>
+              <div class="search">
+                        
+                </div>
+                <div class="table">
+                      <table>
+                        <thead>
+                            <tr class="head">
+                                 <td>Unique id</td>
+                                 <td>Image</td>
+                                 <td>Name</td>
+                                 <td>Email</td>
+                                 <td>Mobile No.</td>
+                                 <td>Designation</td>
+                                 <td>gender</td>
+                                 <td>Course</td>
+                                 <td>Create date</td>
+                                 <td>Action</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for(let employee of employees){  %>
+                                    <tr>
+                                        <td><%= employee._id %></td>
+                                        <td><img src=<%= employee.imageupload %> alt=""></td>
+                                        <td><%= employee.name %></td>
+                                        <td><a href="#"><%= employee.email %></a></td>
+                                        <td><%= employee.mobilenumber %></td>
+                                        <td><%= employee.designation %></td>
+                                        <td><%= employee.gender %></td>
+                                        <td><% for(let degree of employee.course){ %>
+                                            <%= degree %>
+                                        <% } %></td>
+                                        <td><%= employee.date %>  </td>
+                                        <td> 
+                                            <button class="edit">Edit</button>
+                                            <button class="delete">Delete</button>
+                                        </td>
+                                    </tr>
+                                <% } %>
+                        </tbody>
+                      </table>
+                </div>
+            </div>
+        </div>
+</body> 

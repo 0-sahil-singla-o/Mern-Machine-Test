@@ -1,0 +1,192 @@
+*{
+    box-sizing: border-box;
+}
+body{
+    display: flex;
+    justify-content: center;
+    font-family: "poppins","sans-serif";
+}
+.main{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+   
+}
+.header{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.headerlogo{
+    padding: 5px 5px;
+    border-bottom: 1px solid black;
+    
+}
+.navbar{
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    background-color: lightblue;
+    width: 100%;
+}
+.navbar div{
+    width: 40%;
+}
+.nav1{
+    display: flex;
+    justify-content: space-between;
+}
+.nav1 a{
+   text-align: center;
+
+}
+.nav2{
+    display: flex;
+    justify-content: space-between;
+}
+.nav2 a{
+   text-align: center;
+
+}
+.navbar a{
+    width: 100%;
+    text-decoration: none;
+    color: black;
+}
+.container{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.description{
+    width: 100%;
+    padding: 5px 5px;
+    background-color: yellow;
+}
+.containermain{
+    padding: 20px;
+    width: 100%;
+    text-align: center;
+}
+.containermain1{
+    padding: 20px;
+    width: 100%;
+}
+.containermain1 .div{
+    width: 40%;
+    display: flex;
+    text-align: justify;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+.containermain1 span{
+    color: red;
+    margin-left: 70px;
+    margin-top: 10px;
+}
+.smalldiv{
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+.name label{
+    margin-right: 20px;
+}
+.name input{
+    width: 90%;
+    padding: 5px;
+}
+.email label{
+    margin-right: 30px;
+}
+.email input{
+    width: 90%;
+    padding: 5px;
+}
+.mobilenumber label{
+    margin-right: 20px;
+}
+.mobilenumber input{
+    width: 80%;
+    padding: 5px;
+}
+.designation label{
+    margin-right: 20px;
+}
+.designation select{
+    width: 40%;
+    padding: 5px;
+}
+.gender label{
+    margin-right: 20px;
+}
+.gender p{
+    margin-right: 20px;
+}
+.course p{
+    margin-right: 20px;
+}
+.course input{
+    margin-right: 20px;
+}
+.course label{
+    margin-right: 5px;
+}
+.name input{
+    width: 90%;
+    padding: 5px;
+}
+.imageupload label{
+    margin-right: 5px;
+}
+button{
+    background-color: lawngreen;
+    width: 40%;
+    padding: 10px;
+    border: 1px solid black;
+    color: white;
+    font-weight: 700;
+    font-size: 15px;
+   }
+   #mobilenumber::-webkit-outer-spin-button,
+   #mobilenumber::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+                     margin: 0;
+   }
+
+.buttons{
+    height: 30px;
+    display: flex;
+    width:100%;
+    border: 1px solid black;
+}
+.count{
+    width: 70%;
+    text-align: center;
+}
+.createemployee{
+    color: black;
+    background-color: lightgreen;
+    padding: 2px;
+}
+.containermain2{
+  width: 100%;
+}
+table{
+    width: 100%;
+}
+thead{
+    width: 100%;
+}
+table,thead,tr{
+    border: 1px solid;
+}
+tbody img{
+    width: 100px;
+    height: 100px;
+}
+tbody,td{
+    border: 1px solid;
+    text-align: center;
+}

@@ -1,0 +1,85 @@
+
+
+<body>
+    <div class="main">
+        <div class="header">
+            <div class="headerlogo">Logo</div>
+            <div class="navbar">
+                <div class="nav1">
+                    <a href="/dashbord">Home</a>
+                    <a onclick="employeelist()">Employee List</a>
+                </div>
+                <div class="nav2">
+                    <a class="username" href="#"><%= admin.username %></a>
+                    <a class="logout" onclick="logout()">Logout</a>
+                </div> 
+            </div>
+        </div>
+        <div class="description">Create Employee</div>
+        <div class="containermain1">
+            <div class="name div">
+                <div class="smalldiv">
+                    <label for="name">Name</label>
+                    <input type="text" name="name" id="name">
+                </div>
+               <span class="namespan"></span>
+            </div>
+            <div class="email div">
+                <div class="smalldiv">
+                    <label for="email">Email</label>
+                    <input type="text" name="email" id="email">
+                </div>
+                <span class="emailspan"></span>
+            </div>
+            <div class="mobilenumber div">
+                <div class="smalldiv">
+                    <label for="mobilenumber">Mobile No.</label>
+                    <input type="number" name="mobilenumber" id="mobilenumber" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10)">
+                </div>
+                <span class="mobilenumberspan"></span>
+            </div>
+            <div class="designation div">
+                <div class="smalldiv">
+                    <label for="designation">Designation</label>
+                    <select name="designation" id="designation">
+                        <option value="HR">HR</option>
+                        <option value="Manager">Manager</option>
+                        <option value="sales">sales</option>
+                    </select>
+                </div>
+                <span class="designationspan"></span>
+            </div>
+            <div class="gender div">
+                <div class="smalldiv">
+                    <p>Gender</p>
+                    <label for="male">M
+                    <input type="radio" name="gender" value="M" id="male"></label>
+                    <label for="female">F
+                    <input type="radio" name="gender" value="F" id="female"></label>
+                </div>
+                <span class="genderspan"></span>
+            </div>
+            <div class="course div">
+                <div class="smalldiv">
+                    <p>Course</p>
+                    <label for="mca">MCA</label>
+                    <input type="checkbox" name="course" value="MCA" id="mca">
+                    <label for="bca">BCA</label>
+                    <input type="checkbox" name="course" value="BCA" id="bca">
+                    <label for="bsc">BSC</label>
+                    <input type="checkbox" name="course" value="BSC" id="bsc">
+                </div>
+                <span class="coursespan"></span>
+            </div>
+            <div class="imageupload div">
+                <div class="smalldiv">
+                    <label for="image">Img Upload</label>
+                    <input type="file" id="image" name="imageupload" accept="image/png, image/jpeg" />
+                </div>
+                <span class="imageuploadspan"></span>
+            </div>
+            <button onclick="createEmployee()">Submit</button>
+            
+        </div>
+    </div>  
+</body>

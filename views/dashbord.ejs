@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/style.css">
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div class="header">
+            <div class="headerlogo">Logo</div>
+            <div class="navbar">
+                <div class="nav1">
+                    <a href="/dashbord">Home</a>
+                    <a onclick="employeelist()">Employee List</a>
+                </div>
+                <div class="nav2">
+                    <a class="username" href="#"></a>
+                    <a class="logout" onclick="logout()">Logout</a>
+                </div>
+            </div>
+        </div>
+        <div class="description">DashBord</div>
+        <div class="containermain">
+            <br>
+            <br>
+            Welcome Admin Panel
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+        </div>
+    </div>
+    <script>
+         
+        window.onload=function(){
+            let token= localStorage.getItem("token");
+            if(!token){
+                window.location.href="/onaboarding/loginpage";
+            }
+            else{
+                fetch("http://localhost:4000/dashbord/dashbordpage",{
+                    method:"GET",
+                    headers:{  "Authorization": `Bearer ${token}` }
+                })
+                .then(response=>{
+                    if(response.ok){
+                        return response.json()
+                        .then(data=>{document.querySelector(".username").innerText=data.admin.username})
+                    }
+                    else{
+                        return response.json()
+                        .then(error=>{console.log(error)})
+                    }
+                })
+                .catch(err=>{
+                    console.log("error during request to the dashbord",err);
+                })
+            }
+        }
+        function logout(){
+            let token= localStorage.getItem("token");
+            console.log(token);
+            localStorage.removeItem("token");
+            window.location.href="/onaboarding/loginpage"
+        }
+        function employeelist(){
+            let token=localStorage.getItem("token");
+            fetch("http://localhost:4000/dashbord/employeelist",{
+                method:"GET",
+                headers:{
+                     "Authorization": `Bearer ${token}`
+                }
+            })
+            .then(response=>{
+                if(response.ok){
+                    return response.text()
+                    .then(html=>{
+                        console.log(html);
+                        document.body.innerHTML=html
+                        console.log(document.body)
+                    })
+                }
+                else{
+                    return response.json()
+                    .then(error=>{
+                        console.log(error);
+                    })
+                }
+            })
+            .catch(err=>{
+                console.log("error during employeelist request",err);
+            })
+        }
+        function createEmployee(){
+          console.log("working??")
+          let name= document.querySelector("#name").value;
+          console.log(name);
+          let email= document.querySelector("#email").value;
+          console.log(email)
+          let mobilenumber= document.querySelector("#mobilenumber").value;
+          console.log(mobilenumber)
+          let designation= document.querySelector("#designation").value;
+          console.log(designation)
+          let gender = document.querySelector('input[name="gender"]:checked');
+            if (gender) {
+                console.log(gender.value); // Logs the selected value
+            } else {
+                console.log("No gender selected");
+            }
+          let course= document.querySelector("#course");
+          let courses = document.querySelectorAll('input[name="course"]:checked');
+          let selectedCourses = Array.from(courses).map(course => course.value);
+          console.log(selectedCourses)
+          let imageupload = document.querySelector("#image").files[0];
+          console.log(imageupload)
+          let token= localStorage.getItem("token");
+          fetch("http://localhost:4000/dashbord/addemployee",{
+            method:"POST",
+            headers:{"Content-Type":"application/json","Authorization": `Bearer ${token}`},
+            body:JSON.stringify({name:name,email:email,mobilenumber:mobilenumber,designation:designation,gender:gender,selectedCourses:selectedCourses,imageupload:imageupload})
+          })
+          .then(response=>{
+            if(response.ok){
+                return response.text()
+                .then(html=>{
+                    document.body.innerHTML=html;
+                })
+            }
+            else{
+                return response.json()
+                .then(error=>{
+                       if(error.message.path=="name"){
+                            //  document.querySelector("#course").style.borderColor="black";
+                             document.querySelector(".coursespan").innerText="";
+                            //  document.querySelector("#gender").style.borderColor="black";
+                             document.querySelector(".genderspan").innerText="";
+                            document.querySelector("#email").style.borderColor="black";
+                            document.querySelector(".emailspan").innerText="";
+                            document.querySelector("#mobilenumber").style.borderColor="black";
+                            document.querySelector(".mobilenumberspan").innerText="";
+                            document.querySelector(".imageuploadspan").innerText="";
+                            document.querySelector(".namespan").innerText=error.message.msg+" "+"!";
+                            document.querySelector("#name").style.borderColor="red";
+                        }
+                       else if(error.message.path=="email"){
+                             document.querySelector(".coursespan").innerText="";
+                             document.querySelector(".genderspan").innerText="";
+                            document.querySelector("#name").style.borderColor="black";
+                            document.querySelector(".namespan").innerText="";
+                            document.querySelector("#mobilenumber").style.borderColor="black";
+                            document.querySelector(".mobilenumberspan").innerText="";
+                            document.querySelector(".imageuploadspan").innerText="";
+                            document.querySelector(".emailspan").innerText=error.message.msg+" "+"!";
+                            document.querySelector("#email").style.borderColor="red";
+                        }
+                       else if(error.message.path=="mobilenumber"){
+                            document.querySelector(".coursespan").innerText="";
+                            document.querySelector(".genderspan").innerText="";
+                            document.querySelector("#name").style.borderColor="black";
+                            document.querySelector(".namespan").innerText="";
+                            document.querySelector("#email").style.borderColor="black";
+                            document.querySelector(".emailspan").innerText="";
+                            document.querySelector(".imageuploadspan").innerText="";
+                            document.querySelector(".mobilenumberspan").innerText=error.message.msg+" "+"!";
+                            document.querySelector("#mobilenumber").style.borderColor="red";
+                        }
+                       else if(error.message.path=="gender"){
+                            document.querySelector(".coursespan").innerText="";
+                            document.querySelector("#mobilenumber").style.borderColor="black";
+                            document.querySelector(".mobilenumberspan").innerText="";
+                            document.querySelector("#name").style.borderColor="black";
+                            document.querySelector(".namespan").innerText="";
+                            document.querySelector("#email").style.borderColor="black";
+                            document.querySelector(".emailspan").innerText="";
+                            document.querySelector(".imageuploadspan").innerText="";
+                            document.querySelector(".genderspan").innerText=error.message.msg+" "+"!";
+                        }
+                       else if(error.message.path=="selectedCourses"){
+                            document.querySelector(".genderspan").innerText="";
+                            document.querySelector("#mobilenumber").style.borderColor="black";
+                            document.querySelector(".mobilenumberspan").innerText="";
+                            document.querySelector("#name").style.borderColor="black";
+                            document.querySelector(".namespan").innerText="";
+                            document.querySelector("#email").style.borderColor="black";
+                            document.querySelector(".emailspan").innerText="";
+                            document.querySelector(".imageuploadspan").innerText="";
+                            document.querySelector(".coursespan").innerText=error.message.msg+" "+"!";
+                        }
+                        else if(error.message.path=="imageupload"){
+                            document.querySelector(".genderspan").innerText="";
+                            document.querySelector("#mobilenumber").style.borderColor="black";
+                            document.querySelector(".mobilenumberspan").innerText="";
+                            document.querySelector("#name").style.borderColor="black";
+                            document.querySelector(".namespan").innerText="";
+                            document.querySelector("#email").style.borderColor="black";
+                            document.querySelector(".emailspan").innerText="";
+                            document.querySelector(".coursespan").innerText="";
+                            document.querySelector(".imageuploadspan").innerText=error.message.msg+" "+"!";
+                        }
+                })
+            }
+          })
+          .catch(err=>{
+            console.log("error occured during sending request for create new employee",err);
+          })
+        }
+       
+    </script>
+</body>
+</html>
+
