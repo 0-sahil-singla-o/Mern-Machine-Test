@@ -6,12 +6,12 @@ const employeevalidation= [
                     .isAlphanumeric().withMessage("name must only contains alphabet and numbers")
                     .trim()
                     .not().contains(' ').withMessage("name should not contain spaces in between their characters"),
+                    // console.log(body("email")),
     body("email").notEmpty().withMessage("email field is required")
                  .isEmail().withMessage("email is Invalid"),
     body("mobilenumber").notEmpty().withMessage("Mobile No. field is required"),
-    body("gender").notEmpty().withMessage("gender must be selected"),
-    body("selectedCourses").notEmpty().withMessage("course must be selected"),
-    body("imageupload").notEmpty().withMessage("you must have to umpload image of the employee"),               
+    body("gender").custom(value=>{if(value=="no gender selected"){   throw new Error('gender must be selected');}return true}),
+    body("selectedCourses").notEmpty().withMessage("course must be selected"),              
     (req,res,next)=>{
         let result= validationResult(req);
         console.log(result);

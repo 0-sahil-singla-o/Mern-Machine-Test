@@ -96,38 +96,35 @@
             })
         }
         function createEmployee(){
-          console.log("working??")
           let name= document.querySelector("#name").value;
-          console.log(name);
           let email= document.querySelector("#email").value;
-          console.log(email)
           let mobilenumber= document.querySelector("#mobilenumber").value;
-          console.log(mobilenumber)
           let designation= document.querySelector("#designation").value;
-          console.log(designation)
           let gender = document.querySelector('input[name="gender"]:checked');
+          let Gender;
             if (gender) {
-                console.log(gender.value); // Logs the selected value
+                Gender=gender.value // Logs the selected value
             } else {
-                console.log("No gender selected");
+                Gender= "no gender selected"
             }
           let course= document.querySelector("#course");
           let courses = document.querySelectorAll('input[name="course"]:checked');
           let selectedCourses = Array.from(courses).map(course => course.value);
-          console.log(selectedCourses)
           let imageupload = document.querySelector("#image").files[0];
-          console.log(imageupload)
           let token= localStorage.getItem("token");
           fetch("http://localhost:4000/dashbord/addemployee",{
             method:"POST",
             headers:{"Content-Type":"application/json","Authorization": `Bearer ${token}`},
-            body:JSON.stringify({name:name,email:email,mobilenumber:mobilenumber,designation:designation,gender:gender,selectedCourses:selectedCourses,imageupload:imageupload})
+            body:JSON.stringify({name:name,email:email,mobilenumber:mobilenumber,designation:designation,gender:Gender,selectedCourses:selectedCourses,imageupload:imageupload})
           })
           .then(response=>{
             if(response.ok){
                 return response.text()
                 .then(html=>{
                     document.body.innerHTML=html;
+                    let countElement = document.querySelector(".count");
+                    let currentCount = parseInt(countElement.textContent.split(":")[1]);
+                    countElement.textContent = `Total Count: ${currentCount + 1}`;
                 })
             }
             else{
@@ -147,6 +144,19 @@
                             document.querySelector("#name").style.borderColor="red";
                         }
                        else if(error.message.path=="email"){
+                             document.querySelector(".coursespan").innerText="";
+                             document.querySelector(".genderspan").innerText="";
+                            document.querySelector("#name").style.borderColor="black";
+                            document.querySelector(".namespan").innerText="";
+                            document.querySelector("#mobilenumber").style.borderColor="black";
+                            document.querySelector(".mobilenumberspan").innerText="";
+                            document.querySelector(".imageuploadspan").innerText="";
+                            document.querySelector(".emailspan").innerText=error.message.msg+" "+"!";
+                            document.querySelector("#email").style.borderColor="red";
+                        }
+                        else if(error.message.path=="emailserver"){
+                            document.querySelector("#email").style.borderColor="black";
+                            document.querySelector(".emailspan").innerText="";
                              document.querySelector(".coursespan").innerText="";
                              document.querySelector(".genderspan").innerText="";
                             document.querySelector("#name").style.borderColor="black";
@@ -208,7 +218,187 @@
             console.log("error occured during sending request for create new employee",err);
           })
         }
-       
+       function moreemployee(){
+        let token=localStorage.getItem("token");
+            fetch("http://localhost:4000/dashbord/createemployee",{
+                method:"GET",
+                headers:{
+                     "Authorization": `Bearer ${token}`
+                }
+            })
+            .then(response=>{
+                if(response.ok){
+                    return response.text()
+                    .then(html=>{
+                        console.log(html);
+                        document.body.innerHTML=html
+                        console.log(document.body)
+                    })
+                }
+                else{
+                    return response.json()
+                    .then(error=>{
+                        console.log(error);
+                    })
+                }
+            })
+            .catch(err=>{
+                console.log("error during employeelist request",err);
+            })
+       }
+       function edit(employeeId){
+        let token=localStorage.getItem("token");
+        
+          fetch(`http://localhost:4000/dashbord/editemployee/${employeeId}`,{
+              method:"GET",
+                headers:{
+                     "Authorization": `Bearer ${token}`
+                },
+          })
+          .then(response=>{
+            return response.text()
+            .then(html=>{document.body.innerHTML=html})
+          })
+          .catch(err=>{
+            console.log("error during request for edit employee",err)
+          })
+       }
+       function updatedetails(employeeId){
+        let token=localStorage.getItem("token");
+        let name= document.querySelector("#name").value;
+          let email= document.querySelector("#email").value;
+          let mobilenumber= document.querySelector("#mobilenumber").value;
+          let designation= document.querySelector("#designation").value;
+          let gender = document.querySelector('input[name="gender"]:checked');
+          let Gender;
+            if (gender) {
+                Gender=gender.value // Logs the selected value
+            } else {
+                Gender= "no gender selected"
+            }
+          let course= document.querySelector("#course");
+          let courses = document.querySelectorAll('input[name="course"]:checked');
+          let selectedCourses = Array.from(courses).map(course => course.value);
+          let imageupload = document.querySelector("#image").files[0];
+        fetch(`http://localhost:4000/dashbord/updatedetails/${employeeId}`,{
+              method:"POST",
+                headers:{
+                    "Content-Type":"application/json", "Authorization": `Bearer ${token}`
+                },
+                body:JSON.stringify({name:name,email:email,mobilenumber:mobilenumber,designation:designation,gender:Gender,selectedCourses:selectedCourses,imageupload:imageupload})
+          })
+          .then(response=>{
+            if(response.ok){
+                return response.text()
+                .then(html=>{document.body.innerHTML=html})
+            }
+           else{
+            return response.json()
+            .then(error=>{
+                if(error.message.path=="name"){
+                            //  document.querySelector("#course").style.borderColor="black";
+                             document.querySelector(".coursespan").innerText="";
+                            //  document.querySelector("#gender").style.borderColor="black";
+                             document.querySelector(".genderspan").innerText="";
+                            document.querySelector("#email").style.borderColor="black";
+                            document.querySelector(".emailspan").innerText="";
+                            document.querySelector("#mobilenumber").style.borderColor="black";
+                            document.querySelector(".mobilenumberspan").innerText="";
+                            document.querySelector(".imageuploadspan").innerText="";
+                            document.querySelector(".namespan").innerText=error.message.msg+" "+"!";
+                            document.querySelector("#name").style.borderColor="red";
+                        }
+                       else if(error.message.path=="email"){
+                             document.querySelector(".coursespan").innerText="";
+                             document.querySelector(".genderspan").innerText="";
+                            document.querySelector("#name").style.borderColor="black";
+                            document.querySelector(".namespan").innerText="";
+                            document.querySelector("#mobilenumber").style.borderColor="black";
+                            document.querySelector(".mobilenumberspan").innerText="";
+                            document.querySelector(".imageuploadspan").innerText="";
+                            document.querySelector(".emailspan").innerText=error.message.msg+" "+"!";
+                            document.querySelector("#email").style.borderColor="red";
+                        }
+                        else if(error.message.path=="emailserver"){
+                            document.querySelector("#email").style.borderColor="black";
+                            document.querySelector(".emailspan").innerText="";
+                             document.querySelector(".coursespan").innerText="";
+                             document.querySelector(".genderspan").innerText="";
+                            document.querySelector("#name").style.borderColor="black";
+                            document.querySelector(".namespan").innerText="";
+                            document.querySelector("#mobilenumber").style.borderColor="black";
+                            document.querySelector(".mobilenumberspan").innerText="";
+                            document.querySelector(".imageuploadspan").innerText="";
+                            document.querySelector(".emailspan").innerText=error.message.msg+" "+"!";
+                            document.querySelector("#email").style.borderColor="red";
+                        }
+                       else if(error.message.path=="mobilenumber"){
+                            document.querySelector(".coursespan").innerText="";
+                            document.querySelector(".genderspan").innerText="";
+                            document.querySelector("#name").style.borderColor="black";
+                            document.querySelector(".namespan").innerText="";
+                            document.querySelector("#email").style.borderColor="black";
+                            document.querySelector(".emailspan").innerText="";
+                            document.querySelector(".imageuploadspan").innerText="";
+                            document.querySelector(".mobilenumberspan").innerText=error.message.msg+" "+"!";
+                            document.querySelector("#mobilenumber").style.borderColor="red";
+                        }
+                       else if(error.message.path=="gender"){
+                            document.querySelector(".coursespan").innerText="";
+                            document.querySelector("#mobilenumber").style.borderColor="black";
+                            document.querySelector(".mobilenumberspan").innerText="";
+                            document.querySelector("#name").style.borderColor="black";
+                            document.querySelector(".namespan").innerText="";
+                            document.querySelector("#email").style.borderColor="black";
+                            document.querySelector(".emailspan").innerText="";
+                            document.querySelector(".imageuploadspan").innerText="";
+                            document.querySelector(".genderspan").innerText=error.message.msg+" "+"!";
+                        }
+                       else if(error.message.path=="selectedCourses"){
+                            document.querySelector(".genderspan").innerText="";
+                            document.querySelector("#mobilenumber").style.borderColor="black";
+                            document.querySelector(".mobilenumberspan").innerText="";
+                            document.querySelector("#name").style.borderColor="black";
+                            document.querySelector(".namespan").innerText="";
+                            document.querySelector("#email").style.borderColor="black";
+                            document.querySelector(".emailspan").innerText="";
+                            document.querySelector(".imageuploadspan").innerText="";
+                            document.querySelector(".coursespan").innerText=error.message.msg+" "+"!";
+                        }
+                        else if(error.message.path=="imageupload"){
+                            document.querySelector(".genderspan").innerText="";
+                            document.querySelector("#mobilenumber").style.borderColor="black";
+                            document.querySelector(".mobilenumberspan").innerText="";
+                            document.querySelector("#name").style.borderColor="black";
+                            document.querySelector(".namespan").innerText="";
+                            document.querySelector("#email").style.borderColor="black";
+                            document.querySelector(".emailspan").innerText="";
+                            document.querySelector(".coursespan").innerText="";
+                            document.querySelector(".imageuploadspan").innerText=error.message.msg+" "+"!";
+                        }
+            })
+           }
+          })
+          .catch(err=>{
+            console.log("error during request for edit employee",err)
+          })
+       }
+       function deleteemployee(employeeId){
+        let token=localStorage.getItem("token");
+        fetch(`http://localhost:4000/dashbord/deleteemployee/${employeeId}`,{
+              method:"GET",
+                headers:{
+                 "Authorization": `Bearer ${token}`
+                },
+          })
+          .then(response=>{
+            return response.text()
+            .then(html=>{document.body.innerHTML=html})
+          })
+          .catch(err=>{
+            console.log("error during the request of delete employee",err);
+          })
+       }
     </script>
 </body>
 </html>
